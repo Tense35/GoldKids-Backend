@@ -12,14 +12,6 @@ var Venta = connection_1.default.define('Venta', {
         primaryKey: true,
         autoIncrement: true
     },
-    id_producto: {
-        type: sequelize_1.DataTypes.INTEGER,
-        validate: {
-            notEmpty: {
-                msg: 'El id del producto es obligatorio.'
-            }
-        }
-    },
     id_cliente: {
         type: sequelize_1.DataTypes.INTEGER,
         validate: {

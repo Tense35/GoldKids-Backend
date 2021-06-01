@@ -1,7 +1,4 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 // Terceros
 var express_1 = require("express");
@@ -12,10 +9,9 @@ var usuarios_1 = require("../controllers/usuarios");
 // Helpers y middlewares
 var dbv_usuario_1 = require("../helpers/dbv-usuario");
 var validar_campos_1 = require("../middlewares/validar-campos");
-var validar_jwt_1 = __importDefault(require("../middlewares/validar-jwt"));
 // Rutas
 // Obtener todos los usuarios | !query: estado=false
-router.get('/', validar_jwt_1.default, usuarios_1.getUsuarios);
+router.get('/', usuarios_1.getUsuarios);
 // Obtener un usuario | !query: estado=false
 router.get('/:email', [
     express_validator_1.check('email', 'El email proporcionado no es un email válido').isEmail(),

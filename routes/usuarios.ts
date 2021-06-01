@@ -14,7 +14,7 @@ import validarJWT from '../middlewares/validar-jwt';
 // Rutas
 
 // Obtener todos los usuarios | !query: estado=false
-router.get('/', validarJWT ,getUsuarios); 
+router.get('/', getUsuarios); 
 
 // Obtener un usuario | !query: estado=false
 router.get('/:email',
