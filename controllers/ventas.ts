@@ -5,6 +5,7 @@ import { Request, Response } from "express";
 import { clienteNoExiste } from "../helpers/dbv-cliente";
 import { productoNoExiste } from "../helpers/dbv-producto";
 import Venta from '../models/venta';
+import { validarMetodo, validarTransaccion } from '../helpers/dbv-venta';
 
 // Función para errores
 
@@ -17,7 +18,7 @@ const sendError = ( error: Error, res: Response, area:string ) =>
     res.status(500).json
     ({
         ok: false,
-        msg: 'Avisar al administrador del backend - categorias/controller'
+        msg: 'Avisar al administrador del backend - ventas/controller'
     });
 }
 
@@ -38,14 +39,6 @@ export const getVentas = async( req: Request, res: Response ) =>
         if ( estado !== 'false' )
         {
             where.estado = true;
-        }
-
-        if ( id_producto )
-        {
-            if ( productoNoExiste(Number(id_producto)) )
-            {
-                where.id_producto = Number(id_producto);
-            }
         }
 
         if ( id_cliente )
@@ -101,7 +94,7 @@ export const getVenta = async( req: Request, res: Response ) =>
 
     try 
     {
-        let data = ( estado )? await Venta.findOne({ where: {id_venta, estado: 1 }}) : await Venta.findByPk( id_venta );
+        let data = ( estado )? await Venta.findOne({ where: { id_venta, estado: 1 }}) : await Venta.findByPk( id_venta );
 
         if (!data)
         {
@@ -149,29 +142,44 @@ export const postVenta = async( req: Request, res: Response ) =>
 
 export const putVenta = async( req: Request, res: Response ) => 
 {
-    const { email } = req.params;
+    const { id_venta } = req.params;
     const info = req.body;
+    let error = null;
 
-    if ( info.nombre )
+    if ( info.id_cliente )
     {
-        info.nombre = info.nombre.toLowerCase();
+        await clienteNoExiste(info.id_cliente).catch( err => error = err );
     }
 
-    if ( info.password )
+    if ( info.direccion )
     {
-        if ( info.password.length < 5)
-        {
-            return res.status(400).json
-            ({
-                ok: false,
-                msg: 'El password debe de tener 5 o más caracteres'
-            });
-        }
+        info.direccion = info.direccion.toLowerCase();
+    }
+
+    if ( info.metodo )
+    {
+        info.metodo = info.metodo.toUpperCase();
+        await validarMetodo(info.metodo).catch( err => error = err );
+    }
+
+    if ( info.transaccion )
+    {
+        info.transaccion = info.metodo.toUpperCase();
+        await validarTransaccion(info.transaccion).catch( err => error = err );
+    }
+
+    if ( error )
+    {
+        return res.status(400).json
+        ({
+            ok: false,
+            msg: error
+        });
     }
 
     try 
     {
-        const venta = await Venta.findByPk( email );
+        const venta = await Venta.findByPk( id_venta );
         const data = ( venta )? await venta.update(info) : null;
 
         res.json
@@ -189,11 +197,11 @@ export const putVenta = async( req: Request, res: Response ) =>
 
 export const deleteVenta = async( req: Request, res: Response ) => 
 {
-    const { email } = req.params;
+    const { id_venta } = req.params;
 
     try 
     {
-        const venta = await Venta.findByPk( email );
+        const venta = await Venta.findByPk( id_venta );
         const data = ( venta )? await venta.update({ estado: 0 }) : null;
 
         res.json

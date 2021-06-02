@@ -2,8 +2,8 @@
 import { Request, Response } from "express";
 
 // Propios
-import Producto from '../models/producto';
 import { actualizarArchivo, subirArchivo } from '../helpers/subir-archivos';
+import Producto from '../models/producto';
 
 // Función para errores
 
@@ -16,7 +16,7 @@ const sendError = ( error: Error, res: Response, area:string ) =>
     res.status(500).json
     ({
         ok: false,
-        msg: 'Avisar al administrador del backend - categorias/controller'
+        msg: 'Avisar al administrador del backend - productos/controller'
     });
 }
 
@@ -51,31 +51,24 @@ export const getProductos = async( req: Request, res: Response ) =>
             where.destacar = destacar;
         }
 
-        const data = await Producto.findAll({ where });
+        const [ data, total ] = await Promise.all
+        ([
+            // Data
+            await (await Producto.findAll({ where })).map( ( resp: any ) => 
+            {
+                resp.dataValues.precioFinal = (resp.precio - ((resp.precio*resp.descuento)/100) + ((resp.precio*resp.iva)/100));
+                return resp;
+            }),
 
-        let i = 0;
-        const test = data.forEach( elemento => 
-        {
-            console.log('-----------------------------------');
-            console.log('-----------------------------------');
-            console.log('-----------------------------------');
-            const desc = elemento.getDataValue('descuento');
-            const iva = elemento.getDataValue('iva');
-            const precio = elemento.getDataValue('precio');
-            const total = precio - ((precio*desc)/100) - ((precio*iva)/100);
-
-            console.log( elemento );
-            console.log('-----------------------------------');
-            console.log('-----------------------------------');
-            console.log('-----------------------------------');
-        } )
-
-        console.log(test);
+            // Total
+            await Producto.count({ where })
+        ]);
 
         res.json
         ({
             ok: true,
-            data
+            data,
+            total
         });
     } 
     catch (error) 
@@ -139,7 +132,6 @@ export const postProducto = async( req: Request, res: Response ) =>
                 info.imagen = imgUrl;
             }
         }
-        
 
         const data = await Producto.create( info );
 

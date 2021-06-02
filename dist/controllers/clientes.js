@@ -55,36 +55,62 @@ var sendError = function (error, res, area) {
 };
 // Obtener todos los clientes de la base de datos
 var getClientes = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, estado, data, _b, error_1;
-    return __generator(this, function (_c) {
-        switch (_c.label) {
+    var _a, estado, _b, data, total, _c, _d, _e, _f, _g, error_1;
+    return __generator(this, function (_h) {
+        switch (_h.label) {
             case 0:
                 _a = req.query.estado, estado = _a === void 0 ? true : _a;
                 estado = (estado === 'false') ? false : true;
-                _c.label = 1;
+                _h.label = 1;
             case 1:
-                _c.trys.push([1, 6, , 7]);
-                if (!(estado)) return [3 /*break*/, 3];
+                _h.trys.push([1, 11, , 12]);
+                _d = (_c = Promise).all;
+                if (!
+                // Data
+                (estado)) 
+                // Data
+                return [3 /*break*/, 3];
                 return [4 /*yield*/, cliente_1.default.findAll({ where: { estado: true } })];
             case 2:
-                _b = _c.sent();
+                _e = _h.sent();
                 return [3 /*break*/, 5];
             case 3: return [4 /*yield*/, cliente_1.default.findAll()];
             case 4:
-                _b = _c.sent();
-                _c.label = 5;
+                _e = _h.sent();
+                _h.label = 5;
             case 5:
-                data = _b;
+                _f = [
+                    _e
+                ];
+                if (!
+                // Total
+                (estado)) 
+                // Total
+                return [3 /*break*/, 7];
+                return [4 /*yield*/, cliente_1.default.count({ where: { estado: true } })];
+            case 6:
+                _g = _h.sent();
+                return [3 /*break*/, 9];
+            case 7: return [4 /*yield*/, cliente_1.default.count()];
+            case 8:
+                _g = _h.sent();
+                _h.label = 9;
+            case 9: return [4 /*yield*/, _d.apply(_c, [_f.concat([
+                        _g
+                    ])])];
+            case 10:
+                _b = _h.sent(), data = _b[0], total = _b[1];
                 res.json({
                     ok: true,
-                    data: data
+                    data: data,
+                    total: total
                 });
-                return [3 /*break*/, 7];
-            case 6:
-                error_1 = _c.sent();
+                return [3 /*break*/, 12];
+            case 11:
+                error_1 = _h.sent();
                 sendError(error_1, res, 'getClientes');
-                return [3 /*break*/, 7];
-            case 7: return [2 /*return*/];
+                return [3 /*break*/, 12];
+            case 12: return [2 /*return*/];
         }
     });
 }); };

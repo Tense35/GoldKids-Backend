@@ -28,12 +28,20 @@ export const getClientes = async( req: Request, res: Response ) =>
 
     try 
     {
-        const data = ( estado )? await Cliente.findAll({ where: { estado: true } }) : await Cliente.findAll();
+        const [ data, total ] = await Promise.all
+        ([
+            // Data
+            ( estado )? await Cliente.findAll({ where: { estado: true } }) : await Cliente.findAll(),
+
+            // Total
+            ( estado )? await Cliente.count({ where: { estado: true } }) : await Cliente.count(),
+        ]);
 
         res.json
         ({
             ok: true,
-            data
+            data,
+            total
         });
     } 
     catch (error) 
@@ -138,11 +146,7 @@ export const putCliente = async( req: Request, res: Response ) =>
 
     try 
     {
-
-        
-        
         const cliente = await Cliente.findByPk( id_cliente );
-        
         const data = ( cliente )? await cliente.update(info) : null;
 
         res.json

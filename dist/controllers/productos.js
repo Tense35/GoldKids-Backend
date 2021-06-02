@@ -41,8 +41,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteProducto = exports.putProducto = exports.postProducto = exports.getProducto = exports.getProductos = void 0;
 // Propios
-var producto_1 = __importDefault(require("../models/producto"));
 var subir_archivos_1 = require("../helpers/subir-archivos");
+var producto_1 = __importDefault(require("../models/producto"));
 // Función para errores
 var sendError = function (error, res, area) {
     console.log('------------------------------------------');
@@ -51,20 +51,20 @@ var sendError = function (error, res, area) {
     console.log(error);
     res.status(500).json({
         ok: false,
-        msg: 'Avisar al administrador del backend - categorias/controller'
+        msg: 'Avisar al administrador del backend - productos/controller'
     });
 };
 // Obtener todos los productos de la base de datos
 var getProductos = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, _b, estado, descuento, stock, destacado, destacar, where, data, i, test, error_1;
-    return __generator(this, function (_c) {
-        switch (_c.label) {
+    var _a, _b, estado, descuento, stock, destacado, destacar, where, _c, data, total, _d, _e, _f, error_1;
+    return __generator(this, function (_g) {
+        switch (_g.label) {
             case 0:
                 _a = req.query, _b = _a.estado, estado = _b === void 0 ? true : _b, descuento = _a.descuento, stock = _a.stock, destacado = _a.destacado;
                 destacar = (destacado === 'false') ? 0 : 1;
-                _c.label = 1;
+                _g.label = 1;
             case 1:
-                _c.trys.push([1, 3, , 4]);
+                _g.trys.push([1, 6, , 7]);
                 where = {};
                 if (estado !== 'false') {
                     where.estado = true;
@@ -78,34 +78,38 @@ var getProductos = function (req, res) { return __awaiter(void 0, void 0, void 0
                 if (destacado) {
                     where.destacar = destacar;
                 }
+                _e = (_d = Promise).all;
                 return [4 /*yield*/, producto_1.default.findAll({ where: where })];
-            case 2:
-                data = _c.sent();
-                i = 0;
-                test = data.forEach(function (elemento) {
-                    console.log('-----------------------------------');
-                    console.log('-----------------------------------');
-                    console.log('-----------------------------------');
-                    var desc = elemento.getDataValue('descuento');
-                    var iva = elemento.getDataValue('iva');
-                    var precio = elemento.getDataValue('precio');
-                    var total = precio - ((precio * desc) / 100) - ((precio * iva) / 100);
-                    console.log(elemento);
-                    console.log('-----------------------------------');
-                    console.log('-----------------------------------');
-                    console.log('-----------------------------------');
-                });
-                console.log(test);
+            case 2: 
+            // Data
+            return [4 /*yield*/, (_g.sent()).map(function (resp) {
+                    resp.dataValues.precioFinal = (resp.precio - ((resp.precio * resp.descuento) / 100) + ((resp.precio * resp.iva) / 100));
+                    return resp;
+                })];
+            case 3:
+                _f = [
+                    // Data
+                    _g.sent()
+                ];
+                // Total
+                return [4 /*yield*/, producto_1.default.count({ where: where })];
+            case 4: return [4 /*yield*/, _e.apply(_d, [_f.concat([
+                        // Total
+                        _g.sent()
+                    ])])];
+            case 5:
+                _c = _g.sent(), data = _c[0], total = _c[1];
                 res.json({
                     ok: true,
-                    data: data
+                    data: data,
+                    total: total
                 });
-                return [3 /*break*/, 4];
-            case 3:
-                error_1 = _c.sent();
+                return [3 /*break*/, 7];
+            case 6:
+                error_1 = _g.sent();
                 sendError(error_1, res, 'getProductos');
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                return [3 /*break*/, 7];
+            case 7: return [2 /*return*/];
         }
     });
 }); };

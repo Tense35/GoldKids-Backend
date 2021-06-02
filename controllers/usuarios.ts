@@ -16,7 +16,7 @@ const sendError = ( error: Error, res: Response, area:string ) =>
     res.status(500).json
     ({
         ok: false,
-        msg: 'Avisar al administrador del backend - categorias/controller'
+        msg: 'Avisar al administrador del backend - usuarios/controller'
     });
 }
 

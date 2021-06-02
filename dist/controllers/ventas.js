@@ -42,8 +42,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteVenta = exports.putVenta = exports.postVenta = exports.getVenta = exports.getVentas = void 0;
 // Propios
 var dbv_cliente_1 = require("../helpers/dbv-cliente");
-var dbv_producto_1 = require("../helpers/dbv-producto");
 var venta_1 = __importDefault(require("../models/venta"));
+var dbv_venta_1 = require("../helpers/dbv-venta");
 // Función para errores
 var sendError = function (error, res, area) {
     console.log('------------------------------------------');
@@ -52,7 +52,7 @@ var sendError = function (error, res, area) {
     console.log(error);
     res.status(500).json({
         ok: false,
-        msg: 'Avisar al administrador del backend - categorias/controller'
+        msg: 'Avisar al administrador del backend - ventas/controller'
     });
 };
 // Listados
@@ -71,11 +71,6 @@ var getVentas = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                 where = {};
                 if (estado !== 'false') {
                     where.estado = true;
-                }
-                if (id_producto) {
-                    if (dbv_producto_1.productoNoExiste(Number(id_producto))) {
-                        where.id_producto = Number(id_producto);
-                    }
                 }
                 if (id_cliente) {
                     if (dbv_cliente_1.clienteNoExiste(Number(id_cliente))) {
@@ -185,63 +180,82 @@ var postVenta = function (req, res) { return __awaiter(void 0, void 0, void 0, f
 }); };
 exports.postVenta = postVenta;
 var putVenta = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var email, info, venta, data, _a, error_4;
+    var id_venta, info, error, venta, data, _a, error_4;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                email = req.params.email;
+                id_venta = req.params.id_venta;
                 info = req.body;
-                if (info.nombre) {
-                    info.nombre = info.nombre.toLowerCase();
-                }
-                if (info.password) {
-                    if (info.password.length < 5) {
-                        return [2 /*return*/, res.status(400).json({
-                                ok: false,
-                                msg: 'El password debe de tener 5 o más caracteres'
-                            })];
-                    }
-                }
-                _b.label = 1;
+                error = null;
+                if (!info.id_cliente) return [3 /*break*/, 2];
+                return [4 /*yield*/, dbv_cliente_1.clienteNoExiste(info.id_cliente).catch(function (err) { return error = err; })];
             case 1:
-                _b.trys.push([1, 6, , 7]);
-                return [4 /*yield*/, venta_1.default.findByPk(email)];
+                _b.sent();
+                _b.label = 2;
             case 2:
-                venta = _b.sent();
-                if (!(venta)) return [3 /*break*/, 4];
-                return [4 /*yield*/, venta.update(info)];
+                if (info.direccion) {
+                    info.direccion = info.direccion.toLowerCase();
+                }
+                if (!info.metodo) return [3 /*break*/, 4];
+                info.metodo = info.metodo.toUpperCase();
+                return [4 /*yield*/, dbv_venta_1.validarMetodo(info.metodo).catch(function (err) { return error = err; })];
             case 3:
-                _a = _b.sent();
-                return [3 /*break*/, 5];
+                _b.sent();
+                _b.label = 4;
             case 4:
-                _a = null;
-                _b.label = 5;
+                if (!info.transaccion) return [3 /*break*/, 6];
+                info.transaccion = info.metodo.toUpperCase();
+                return [4 /*yield*/, dbv_venta_1.validarTransaccion(info.transaccion).catch(function (err) { return error = err; })];
             case 5:
+                _b.sent();
+                _b.label = 6;
+            case 6:
+                if (error) {
+                    return [2 /*return*/, res.status(400).json({
+                            ok: false,
+                            msg: error
+                        })];
+                }
+                _b.label = 7;
+            case 7:
+                _b.trys.push([7, 12, , 13]);
+                return [4 /*yield*/, venta_1.default.findByPk(id_venta)];
+            case 8:
+                venta = _b.sent();
+                if (!(venta)) return [3 /*break*/, 10];
+                return [4 /*yield*/, venta.update(info)];
+            case 9:
+                _a = _b.sent();
+                return [3 /*break*/, 11];
+            case 10:
+                _a = null;
+                _b.label = 11;
+            case 11:
                 data = _a;
                 res.json({
                     ok: true,
                     data: data
                 });
-                return [3 /*break*/, 7];
-            case 6:
+                return [3 /*break*/, 13];
+            case 12:
                 error_4 = _b.sent();
                 sendError(error_4, res, 'putVenta');
-                return [3 /*break*/, 7];
-            case 7: return [2 /*return*/];
+                return [3 /*break*/, 13];
+            case 13: return [2 /*return*/];
         }
     });
 }); };
 exports.putVenta = putVenta;
 var deleteVenta = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var email, venta, data, _a, error_5;
+    var id_venta, venta, data, _a, error_5;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                email = req.params.email;
+                id_venta = req.params.id_venta;
                 _b.label = 1;
             case 1:
                 _b.trys.push([1, 6, , 7]);
-                return [4 /*yield*/, venta_1.default.findByPk(email)];
+                return [4 /*yield*/, venta_1.default.findByPk(id_venta)];
             case 2:
                 venta = _b.sent();
                 if (!(venta)) return [3 /*break*/, 4];

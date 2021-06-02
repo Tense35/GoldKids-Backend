@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// Terceros
 var sequelize_1 = require("sequelize");
 var connection_1 = __importDefault(require("../db/connection"));
 // Param1: Nombre del modelo | Param2: Atributos | Param3: Confgs
@@ -65,7 +66,7 @@ var Producto = connection_1.default.define('Producto', {
     },
     imagen: {
         type: sequelize_1.DataTypes.STRING,
-        defaultValue: 'https://res.cloudinary.com/tense/image/upload/v1621928936/noimage.jpg'
+        defaultValue: 'https://res.cloudinary.com/dm1464giy/image/upload/v1622577586/noimage.jpg'
     },
     iva: {
         type: sequelize_1.DataTypes.FLOAT,
@@ -91,5 +92,6 @@ var Producto = connection_1.default.define('Producto', {
     createdAt: false,
     updatedAt: false
 });
+//Producto.belongsTo(Categoria, { foreignKey: 'FK_Producto', targetKey: 'id_categoria' });
 exports.default = Producto;
 //# sourceMappingURL=producto.js.map

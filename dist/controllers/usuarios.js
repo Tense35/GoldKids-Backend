@@ -52,7 +52,7 @@ var sendError = function (error, res, area) {
     console.log(error);
     res.status(500).json({
         ok: false,
-        msg: 'Avisar al administrador del backend - categorias/controller'
+        msg: 'Avisar al administrador del backend - usuarios/controller'
     });
 };
 // Obtener todos los usuarios de la base de datos
