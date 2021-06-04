@@ -24,7 +24,7 @@ const sendError = ( error: Error, res: Response, area:string ) =>
 // Obtener todos los productos de la base de datos
 export const getProductos = async( req: Request, res: Response ) => 
 {
-    let { estado = true, descuento, stock, destacado } = req.query;
+    let { estado = true, descuento, stock, destacado, categoria } = req.query;
 
     const destacar = ( destacado === 'false' )? 0 : 1;
     
@@ -35,6 +35,11 @@ export const getProductos = async( req: Request, res: Response ) =>
         if ( estado !== 'false' )
         {
             where.estado = true;
+        }
+
+        if ( categoria && categoria !== 'false')
+        {
+            where.id_categoria = categoria;
         }
 
         if ( descuento )
