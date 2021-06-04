@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // Terceros
 var sequelize_1 = require("sequelize");
 var connection_1 = __importDefault(require("../db/connection"));
+// Propios
+var categoria_1 = __importDefault(require("./categoria"));
 // Param1: Nombre del modelo | Param2: Atributos | Param3: Confgs
 var Producto = connection_1.default.define('Producto', {
     id_producto: {
@@ -92,6 +94,7 @@ var Producto = connection_1.default.define('Producto', {
     createdAt: false,
     updatedAt: false
 });
-//Producto.belongsTo(Categoria, { foreignKey: 'FK_Producto', targetKey: 'id_categoria' });
+// Añadir asosiación con la clave foránea
+Producto.hasMany(categoria_1.default, { foreignKey: { field: 'id_categoria' } });
 exports.default = Producto;
 //# sourceMappingURL=producto.js.map

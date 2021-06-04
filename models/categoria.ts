@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import db from "../db/connection";
+import Producto from "./producto";
 
 // Param1: Nombre del modelo | Param2: Atributos | Param3: Confgs
 const Categoria = db.define('Categorias', 

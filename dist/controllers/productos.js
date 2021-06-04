@@ -43,6 +43,7 @@ exports.deleteProducto = exports.putProducto = exports.postProducto = exports.ge
 // Propios
 var subir_archivos_1 = require("../helpers/subir-archivos");
 var producto_1 = __importDefault(require("../models/producto"));
+var categoria_1 = __importDefault(require("../models/categoria"));
 // Función para errores
 var sendError = function (error, res, area) {
     console.log('------------------------------------------');
@@ -79,7 +80,7 @@ var getProductos = function (req, res) { return __awaiter(void 0, void 0, void 0
                     where.destacar = destacar;
                 }
                 _e = (_d = Promise).all;
-                return [4 /*yield*/, producto_1.default.findAll({ where: where })];
+                return [4 /*yield*/, producto_1.default.findAll({ where: where, include: { model: categoria_1.default, attributes: ['nombre'] } })];
             case 2: 
             // Data
             return [4 /*yield*/, (_g.sent()).map(function (resp) {

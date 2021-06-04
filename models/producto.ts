@@ -16,7 +16,7 @@ const Producto = db.define('Producto',
     },
     id_categoria: 
     {
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER 
     },
     color: 
     {
@@ -120,6 +120,7 @@ const Producto = db.define('Producto',
     updatedAt: false
 });
 
-//Producto.belongsTo(Categoria, { foreignKey: 'FK_Producto', targetKey: 'id_categoria' });
+// Añadir asosiación con la clave foránea
+Producto.hasMany(Categoria, { foreignKey: { field: 'id_categoria' } });
 
 export default Producto;
