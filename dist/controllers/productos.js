@@ -57,11 +57,11 @@ var sendError = function (error, res, area) {
 };
 // Obtener todos los productos de la base de datos
 var getProductos = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, _b, estado, descuento, stock, destacado, destacar, where, _c, data, total, _d, _e, _f, error_1;
+    var _a, _b, estado, descuento, stock, destacado, categoria, destacar, where, _c, data, total, _d, _e, _f, error_1;
     return __generator(this, function (_g) {
         switch (_g.label) {
             case 0:
-                _a = req.query, _b = _a.estado, estado = _b === void 0 ? true : _b, descuento = _a.descuento, stock = _a.stock, destacado = _a.destacado;
+                _a = req.query, _b = _a.estado, estado = _b === void 0 ? true : _b, descuento = _a.descuento, stock = _a.stock, destacado = _a.destacado, categoria = _a.categoria;
                 destacar = (destacado === 'false') ? 0 : 1;
                 _g.label = 1;
             case 1:
@@ -69,6 +69,9 @@ var getProductos = function (req, res) { return __awaiter(void 0, void 0, void 0
                 where = {};
                 if (estado !== 'false') {
                     where.estado = true;
+                }
+                if (categoria && categoria !== 'false') {
+                    where.id_categoria = categoria;
                 }
                 if (descuento) {
                     where.descuento = descuento;

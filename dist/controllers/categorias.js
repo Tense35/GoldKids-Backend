@@ -86,6 +86,9 @@ var getCategorias = function (req, res) { return __awaiter(void 0, void 0, void 
                 _c.label = 5;
             case 5:
                 data = _b;
+                console.log(data);
+                // @ts-ignore
+                data === null || data === void 0 ? true : delete data.dataValues.ProductoIdProducto;
                 res.json({
                     ok: true,
                     data: data

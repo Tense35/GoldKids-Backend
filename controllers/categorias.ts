@@ -30,6 +30,10 @@ export const getCategorias = async( req: Request, res: Response ) =>
     {
         const data = ( estado )? await Categoria.findAll({ where: { estado: true } }) : await Categoria.findAll();
 
+        console.log(data);
+        // @ts-ignore
+        delete data?.dataValues.ProductoIdProducto;
+
         res.json
         ({
             ok: true,
