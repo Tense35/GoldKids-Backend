@@ -59,8 +59,8 @@ export const getProductos = async( req: Request, res: Response ) =>
 
         const [ data, total ] = await Promise.all
         ([
-            // Data
-            await (await Producto.findAll({ where, include: { model: Categoria, attributes: ['nombre'] } })).map( ( resp: any ) => 
+            // Data                                     Join
+            await (await Producto.findAll({ where /*, include: { model: Categoria, attributes: ['nombre'] }*/ })).map( ( resp: any ) => 
             {
                 resp.dataValues.precioFinal = (resp.precio - ((resp.precio*resp.descuento)/100) + ((resp.precio*resp.iva)/100));
                 return resp;
