@@ -121,6 +121,6 @@ const Producto = db.define('Producto',
 });
 
 // Añadir asosiación con la clave foránea
-Producto.hasMany(Categoria, { foreignKey: { field: 'id_categoria' } });
+//Producto.hasMany(Categoria, { foreignKey: { field: 'id_categoria' } });
 
 export default Producto;
