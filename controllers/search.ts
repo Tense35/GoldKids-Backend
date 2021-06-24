@@ -30,8 +30,8 @@ export const getSearch = async( req: Request, res: Response ) =>
     try 
     {
         // Obtener el modelo a utilizar
-        // const Tabla = obtenerClase(tabla || 'usuarios');
-        const Tabla = Usuario;
+        const Tabla = obtenerClase(tabla || 'usuarios');
+        // const Tabla = Usuario;
 
         // Validar el campo
         if ( !validarCampoSearch(tabla, campo) )

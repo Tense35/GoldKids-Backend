@@ -35,15 +35,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getSearch = void 0;
 var sequelize_1 = require("sequelize");
 // Propios
 var v_rutas_1 = require("../helpers/v-rutas");
-var usuario_1 = __importDefault(require("../models/usuario"));
 // Función para errores
 var sendError = function (error, res, area) {
     console.log('------------------------------------------');
@@ -67,7 +63,8 @@ var getSearch = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                 _v.label = 1;
             case 1:
                 _v.trys.push([1, 11, , 12]);
-                Tabla = usuario_1.default;
+                Tabla = v_rutas_1.obtenerClase(tabla || 'usuarios');
+                // const Tabla = Usuario;
                 // Validar el campo
                 if (!v_rutas_1.validarCampoSearch(tabla, campo)) {
                     res.status(400).json({

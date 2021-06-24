@@ -43,7 +43,6 @@ exports.deleteProducto = exports.putProducto = exports.postProducto = exports.ge
 // Propios
 var subir_archivos_1 = require("../helpers/subir-archivos");
 var producto_1 = __importDefault(require("../models/producto"));
-var categoria_1 = __importDefault(require("../models/categoria"));
 // Función para errores
 var sendError = function (error, res, area) {
     console.log('------------------------------------------');
@@ -57,15 +56,15 @@ var sendError = function (error, res, area) {
 };
 // Obtener todos los productos de la base de datos
 var getProductos = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, _b, estado, descuento, stock, destacado, categoria, destacar, where, _c, data, total, _d, _e, _f, error_1;
-    return __generator(this, function (_g) {
-        switch (_g.label) {
+    var _a, _b, estado, descuento, stock, destacado, categoria, _c, limite, _d, desde, destacar, where, _e, data, total, _f, _g, _h, error_1;
+    return __generator(this, function (_j) {
+        switch (_j.label) {
             case 0:
-                _a = req.query, _b = _a.estado, estado = _b === void 0 ? true : _b, descuento = _a.descuento, stock = _a.stock, destacado = _a.destacado, categoria = _a.categoria;
+                _a = req.query, _b = _a.estado, estado = _b === void 0 ? true : _b, descuento = _a.descuento, stock = _a.stock, destacado = _a.destacado, categoria = _a.categoria, _c = _a.limite, limite = _c === void 0 ? 40 : _c, _d = _a.desde, desde = _d === void 0 ? 0 : _d;
                 destacar = (destacado === 'false') ? 0 : 1;
-                _g.label = 1;
+                _j.label = 1;
             case 1:
-                _g.trys.push([1, 6, , 7]);
+                _j.trys.push([1, 6, , 7]);
                 where = {};
                 if (estado !== 'false') {
                     where.estado = true;
@@ -82,27 +81,30 @@ var getProductos = function (req, res) { return __awaiter(void 0, void 0, void 0
                 if (destacado) {
                     where.destacar = destacar;
                 }
-                _e = (_d = Promise).all;
-                return [4 /*yield*/, producto_1.default.findAll({ where: where, include: { model: categoria_1.default, attributes: ['nombre'] } })];
+                // Parseo
+                limite = Number(limite);
+                desde = Number(desde);
+                _g = (_f = Promise).all;
+                return [4 /*yield*/, producto_1.default.findAll({ where: where, limit: limite, offset: desde, order: [['id_producto', 'ASC']] /*, include: { model: Categoria, attributes: ['nombre'] }*/ })];
             case 2: 
-            // Data
-            return [4 /*yield*/, (_g.sent()).map(function (resp) {
+            // Data                                     Join
+            return [4 /*yield*/, (_j.sent()).map(function (resp) {
                     resp.dataValues.precioFinal = (resp.precio - ((resp.precio * resp.descuento) / 100) + ((resp.precio * resp.iva) / 100));
                     return resp;
                 })];
             case 3:
-                _f = [
-                    // Data
-                    _g.sent()
+                _h = [
+                    // Data                                     Join
+                    _j.sent()
                 ];
                 // Total
                 return [4 /*yield*/, producto_1.default.count({ where: where })];
-            case 4: return [4 /*yield*/, _e.apply(_d, [_f.concat([
+            case 4: return [4 /*yield*/, _g.apply(_f, [_h.concat([
                         // Total
-                        _g.sent()
+                        _j.sent()
                     ])])];
             case 5:
-                _c = _g.sent(), data = _c[0], total = _c[1];
+                _e = _j.sent(), data = _e[0], total = _e[1];
                 res.json({
                     ok: true,
                     data: data,
@@ -110,7 +112,7 @@ var getProductos = function (req, res) { return __awaiter(void 0, void 0, void 0
                 });
                 return [3 /*break*/, 7];
             case 6:
-                error_1 = _g.sent();
+                error_1 = _j.sent();
                 sendError(error_1, res, 'getProductos');
                 return [3 /*break*/, 7];
             case 7: return [2 /*return*/];

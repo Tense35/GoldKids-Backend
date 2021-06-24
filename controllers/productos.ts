@@ -7,7 +7,6 @@ import Producto from '../models/producto';
 import Categoria from '../models/categoria';
 
 // Función para errores
-
 const sendError = ( error: Error, res: Response, area:string ) =>
 {
     console.log('------------------------------------------');
@@ -24,7 +23,7 @@ const sendError = ( error: Error, res: Response, area:string ) =>
 // Obtener todos los productos de la base de datos
 export const getProductos = async( req: Request, res: Response ) => 
 {
-    let { estado = true, descuento, stock, destacado, categoria } = req.query;
+    let { estado = true, descuento, stock, destacado, categoria, limite = 40, desde = 0 } = req.query;
 
     const destacar = ( destacado === 'false' )? 0 : 1;
     
@@ -57,10 +56,14 @@ export const getProductos = async( req: Request, res: Response ) =>
             where.destacar = destacar;
         }
 
+        // Parseo
+        limite = Number(limite);
+        desde = Number(desde);
+
         const [ data, total ] = await Promise.all
         ([
             // Data                                     Join
-            await (await Producto.findAll({ where /*, include: { model: Categoria, attributes: ['nombre'] }*/ })).map( ( resp: any ) => 
+            await (await Producto.findAll({ where, limit: limite, offset: desde, order: [['id_producto', 'ASC']] /*, include: { model: Categoria, attributes: ['nombre'] }*/ })).map( ( resp: any ) => 
             {
                 resp.dataValues.precioFinal = (resp.precio - ((resp.precio*resp.descuento)/100) + ((resp.precio*resp.iva)/100));
                 return resp;

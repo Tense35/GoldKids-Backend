@@ -18,6 +18,13 @@ var Rutas = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
+    Object.defineProperty(Rutas.prototype, "camposProducto", {
+        get: function () {
+            return ['id_producto', 'id_categoria', 'color', 'talla', 'nombre', 'genero', 'precio', 'descripcion', 'iva', 'destacar', 'descuento', 'stock', 'estado'];
+        },
+        enumerable: false,
+        configurable: true
+    });
     return Rutas;
 }());
 exports.Rutas = Rutas;

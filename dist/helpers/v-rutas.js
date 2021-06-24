@@ -90,9 +90,11 @@ var validarCampoSearch = function (tabla, campo) {
         // case 'clientes':
         //     return Cliente;
         // break;
-        // case 'productos':
-        //     return Producto;
-        // break;
+        case 'productos':
+            if (rutas.camposProducto.includes(campo.toLowerCase())) {
+                return true;
+            }
+            break;
         default:
             return false;
             break;

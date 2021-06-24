@@ -61,9 +61,12 @@ export const validarCampoSearch = ( tabla: string, campo: string) =>
         //     return Cliente;
         // break;
 
-        // case 'productos':
-        //     return Producto;
-        // break;
+        case 'productos':
+            if ( rutas.camposProducto.includes(campo.toLowerCase()) )
+            {
+                return true;
+            }
+        break;
     
         default:
             return false
