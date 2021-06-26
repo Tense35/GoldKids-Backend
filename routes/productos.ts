@@ -40,9 +40,6 @@ router.post('/',
 router.put('/:id_producto',
 [
     check('id_producto').custom( productoNoExiste ),
-    check('id_categoria', 'El id_categoria es obligatorio').notEmpty(),
-    validarCampos,
-    check('id_categoria').custom( categoriaNoExiste ),
     validarCampos
 ], putProducto);
 

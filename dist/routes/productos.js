@@ -32,9 +32,6 @@ router.post('/', [
 ], productos_1.postProducto);
 router.put('/:id_producto', [
     express_validator_1.check('id_producto').custom(dbv_producto_1.productoNoExiste),
-    express_validator_1.check('id_categoria', 'El id_categoria es obligatorio').notEmpty(),
-    validar_campos_1.validarCampos,
-    express_validator_1.check('id_categoria').custom(dbv_categoria_1.categoriaNoExiste),
     validar_campos_1.validarCampos
 ], productos_1.putProducto);
 router.delete('/:id_producto', [
