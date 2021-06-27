@@ -100,7 +100,8 @@ var getCategorias = function (req, res) { return __awaiter(void 0, void 0, void 
                 _e = _j.sent(), data = _e[0], total = _e[1];
                 res.json({
                     ok: true,
-                    data: data
+                    data: data,
+                    total: total
                 });
                 return [3 /*break*/, 6];
             case 5:

@@ -51,7 +51,8 @@ export const getCategorias = async( req: Request, res: Response ) =>
         res.json
         ({
             ok: true,
-            data
+            data,
+            total
         });
     } 
     catch (error) 
