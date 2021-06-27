@@ -66,36 +66,48 @@ var sendError = function (error, res, area) {
 };
 // Obtener todas las categorias de la base de datos
 var getCategorias = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, estado, data, _b, error_1;
-    return __generator(this, function (_c) {
-        switch (_c.label) {
+    var _a, _b, estado, _c, limite, _d, desde, where, _e, data, total, _f, _g, _h, error_1;
+    return __generator(this, function (_j) {
+        switch (_j.label) {
             case 0:
-                _a = req.query.estado, estado = _a === void 0 ? true : _a;
+                _a = req.query, _b = _a.estado, estado = _b === void 0 ? true : _b, _c = _a.limite, limite = _c === void 0 ? 40 : _c, _d = _a.desde, desde = _d === void 0 ? 0 : _d;
                 estado = (estado === 'false') ? false : true;
-                _c.label = 1;
+                _j.label = 1;
             case 1:
-                _c.trys.push([1, 6, , 7]);
-                if (!(estado)) return [3 /*break*/, 3];
-                return [4 /*yield*/, categoria_1.default.findAll({ where: { estado: true } })];
+                _j.trys.push([1, 5, , 6]);
+                where = {};
+                if (estado) {
+                    where.estado = true;
+                }
+                // Parseo
+                limite = Number(limite);
+                desde = Number(desde);
+                _g = (_f = Promise).all;
+                // Data
+                return [4 /*yield*/, categoria_1.default.findAll({ where: where, limit: limite, offset: desde, order: [['nombre', 'ASC']] })];
             case 2:
-                _b = _c.sent();
-                return [3 /*break*/, 5];
-            case 3: return [4 /*yield*/, categoria_1.default.findAll()];
+                _h = [
+                    // Data
+                    _j.sent()
+                ];
+                // Total
+                return [4 /*yield*/, categoria_1.default.count({ where: where })];
+            case 3: return [4 /*yield*/, _g.apply(_f, [_h.concat([
+                        // Total
+                        _j.sent()
+                    ])])];
             case 4:
-                _b = _c.sent();
-                _c.label = 5;
-            case 5:
-                data = _b;
+                _e = _j.sent(), data = _e[0], total = _e[1];
                 res.json({
                     ok: true,
                     data: data
                 });
-                return [3 /*break*/, 7];
-            case 6:
-                error_1 = _c.sent();
+                return [3 /*break*/, 6];
+            case 5:
+                error_1 = _j.sent();
                 sendError(error_1, res, 'getCategorias');
-                return [3 /*break*/, 7];
-            case 7: return [2 /*return*/];
+                return [3 /*break*/, 6];
+            case 6: return [2 /*return*/];
         }
     });
 }); };

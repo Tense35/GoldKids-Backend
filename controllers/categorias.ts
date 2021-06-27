@@ -22,14 +22,32 @@ const sendError = ( error: Error, res: Response, area:string ) =>
 // Obtener todas las categorias de la base de datos
 export const getCategorias = async( req: Request, res: Response ) => 
 {
-    let { estado = true } = req.query;
+    let { estado = true, limite = 40, desde = 0 } = req.query;
 
     estado = ( estado === 'false' )? false : true;
 
     try 
     {
-        const data = ( estado )? await Categoria.findAll({ where: { estado: true } }) : await Categoria.findAll();
-        
+        let where: any = { };
+
+        if ( estado )
+        {
+            where.estado = true;
+        }
+
+        // Parseo
+        limite = Number(limite);
+        desde = Number(desde);
+
+        const [ data, total ] = await Promise.all
+        ([
+            // Data
+            await Categoria.findAll({ where, limit: limite, offset: desde, order: [['nombre', 'ASC']]}),
+
+            // Total
+            await Categoria.count({ where })
+        ]);
+
         res.json
         ({
             ok: true,
