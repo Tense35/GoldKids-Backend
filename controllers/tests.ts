@@ -1,7 +1,15 @@
 // Terceros
 import { Request, Response } from "express";
-import { Op } from 'sequelize';
+const nodemailer = require('nodemailer');
 import { clienteNoExiste } from "../helpers/dbv-cliente";
+
+const transporter = nodemailer.createTransport({
+    service: "Hotmail",
+    auth: {
+        user: 'linuxmtasa@hotmail.com',
+        pass: 'LinuxMTA'
+    }
+});
 
 // Propios
 import Usuario from "../models/usuario";
@@ -20,22 +28,28 @@ const sendError = ( error: Error, res: Response, area:string ) =>
     });
 }
 
-export const getTest = async( req: Request, res: Response ) => 
+export const postTest = async( req: Request, res: Response ) => 
 {
-    const info = req.body;
+    const { to, text } = req.body;
 
     try 
     {
-        const test = await clienteNoExiste(info.id_cliente).catch( error => 
+        const mailOptions = 
         {
-            return console.log (error);
-        })
+            from: 'GoldKids@hotmail.com',
+            to,
+            subject: 'Correo de prueba - GoldKids',
+            text
+        }
 
-        console.log('----------------------');
-        console.log('         TEST         ');
-        console.log('----------------------');
-        console.log('----------------------');
-        console.log('----------------------');
+        transporter.sendMail(mailOptions, (error: any, info: any) =>
+        {
+            console.log(info);
+            if (error)
+            {
+                console.log(error);
+            }
+        });
 
         res.json
         ({

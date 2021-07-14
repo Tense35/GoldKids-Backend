@@ -36,8 +36,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTest = void 0;
-var dbv_cliente_1 = require("../helpers/dbv-cliente");
+exports.postTest = void 0;
+var nodemailer = require('nodemailer');
+var transporter = nodemailer.createTransport({
+    service: "Hotmail",
+    auth: {
+        user: 'linuxmtasa@hotmail.com',
+        pass: 'LinuxMTA'
+    }
+});
 // Función para errores
 var sendError = function (error, res, area) {
     console.log('------------------------------------------');
@@ -49,36 +56,32 @@ var sendError = function (error, res, area) {
         msg: 'Avisar al administrador del backend - test/controller'
     });
 };
-var getTest = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var info, test, error_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                info = req.body;
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, dbv_cliente_1.clienteNoExiste(info.id_cliente).catch(function (error) {
-                        return console.log(error);
-                    })];
-            case 2:
-                test = _a.sent();
-                console.log('----------------------');
-                console.log('         TEST         ');
-                console.log('----------------------');
-                console.log('----------------------');
-                console.log('----------------------');
-                res.json({
-                    ok: true,
-                });
-                return [3 /*break*/, 4];
-            case 3:
-                error_1 = _a.sent();
-                sendError(error_1, res, 'getSearch');
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+var postTest = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, to, text, mailOptions;
+    return __generator(this, function (_b) {
+        _a = req.body, to = _a.to, text = _a.text;
+        try {
+            mailOptions = {
+                from: 'GoldKids@hotmail.com',
+                to: to,
+                subject: 'Correo de prueba - GoldKids',
+                text: text
+            };
+            transporter.sendMail(mailOptions, function (error, info) {
+                console.log(info);
+                if (error) {
+                    console.log(error);
+                }
+            });
+            res.json({
+                ok: true,
+            });
         }
+        catch (error) {
+            sendError(error, res, 'getSearch');
+        }
+        return [2 /*return*/];
     });
 }); };
-exports.getTest = getTest;
+exports.postTest = postTest;
 //# sourceMappingURL=tests.js.map

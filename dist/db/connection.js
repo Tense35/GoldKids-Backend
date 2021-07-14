@@ -6,11 +6,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var sequelize_1 = require("sequelize");
 var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-var dbName = process.env.DB_NAME || '';
-var password = process.env.DB_PASS || '';
-// Parámetros: DbName, User, Contraseña, Confg
-var db = new sequelize_1.Sequelize(dbName, dbName, password, {
-    host: 'remotemysql.com',
+// RemoteMysql
+// const dbName = process.env.DB_NAME || '';
+// const password = process.env.DB_PASS || '';
+// CleverCloud
+var dbName = process.env.DB_NAME_CLEVER || '';
+var dbUser = process.env.DB_USER_CLEVER || '';
+var password = process.env.DB_PASS_CLEVER || '';
+// Parámetros: DbName, User, Contraseña, Confg - RemoteMysql
+// const db = new Sequelize(dbName, dbName, password, 
+// {
+//     host: 'remotemysql.com',
+//     dialect: 'mysql',
+//     //logging: false
+// });
+// Parámetros: DbName, User, Contraseña, Confg - Clever-Cloud
+var db = new sequelize_1.Sequelize(dbName, dbUser, password, {
+    host: 'bstsjjetowfafkf7fcrq-mysql.services.clever-cloud.com',
     dialect: 'mysql',
     //logging: false
 });
