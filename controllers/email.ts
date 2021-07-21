@@ -14,29 +14,35 @@ const transporter = nodemailer.createTransport({
 const sendError = ( error: Error, res: Response, area:string ) =>
 {
     console.log('------------------------------------------');
-    console.log(`Error test/controller, ${ area }`);
+    console.log(`Error email/controller, ${ area }`);
     console.log('------------------------------------------');
     console.log(error);
     res.status(500).json
     ({
         ok: false,
-        msg: 'Avisar al administrador del backend - test/controller'
+        msg: 'Avisar al administrador del backend - email/controller'
     });
 }
 
-export const postTest = async( req: Request, res: Response ) => 
+export const postEmail = async( req: Request, res: Response ) => 
 {
     const { to, text } = req.body;
+
+    console.log('-------------');
+    console.log(req.body);
+    console.log('-------------');
 
     try 
     {
         const mailOptions = 
         {
-            from: 'GoldKids@hotmail.com',
+            from: 'linuxmtasa@hotmail.com',
             to,
-            subject: 'Correo de prueba - GoldKids',
+            subject: 'Información - GoldKids | No responder',
             text
         }
+
+        console.log(mailOptions);
 
         transporter.sendMail(mailOptions, (error: any, info: any) =>
         {
@@ -54,6 +60,6 @@ export const postTest = async( req: Request, res: Response ) =>
     } 
     catch (error) 
     {
-        sendError(error, res, 'getSearch' );
+        sendError(error, res, 'postEmail' );
     }
 }

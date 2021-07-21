@@ -10,6 +10,7 @@ import db from "../db/connection";
 import authRoutes from '../routes/auth';
 import categoriasRoutes from '../routes/categorias';
 import clientesRoutes from '../routes/clientes';
+import emailRoutes from '../routes/email';
 import productosRoutes from '../routes/productos';
 import searchRoutes from '../routes/search';
 import testRoutes from '../routes/test';
@@ -29,6 +30,7 @@ class Server
         auth: '/api/auth',
         categorias: '/api/categorias',
         clientes: '/api/clientes',
+        emails: '/api/emails',
         productos: '/api/productos',
         search: '/api/search',
         test: '/api/test',
@@ -88,6 +90,7 @@ class Server
         this.app.use( this.paths.auth, authRoutes );
         this.app.use( this.paths.categorias, categoriasRoutes );
         this.app.use( this.paths.clientes, clientesRoutes );
+        this.app.use( this.paths.emails, emailRoutes );
         this.app.use( this.paths.productos, productosRoutes );
         this.app.use( this.paths.search, searchRoutes );
         this.app.use( this.paths.test, testRoutes );

@@ -49,6 +49,7 @@ var connection_1 = __importDefault(require("../db/connection"));
 var auth_1 = __importDefault(require("../routes/auth"));
 var categorias_1 = __importDefault(require("../routes/categorias"));
 var clientes_1 = __importDefault(require("../routes/clientes"));
+var email_1 = __importDefault(require("../routes/email"));
 var productos_1 = __importDefault(require("../routes/productos"));
 var search_1 = __importDefault(require("../routes/search"));
 var test_1 = __importDefault(require("../routes/test"));
@@ -61,6 +62,7 @@ var Server = /** @class */ (function () {
             auth: '/api/auth',
             categorias: '/api/categorias',
             clientes: '/api/clientes',
+            emails: '/api/emails',
             productos: '/api/productos',
             search: '/api/search',
             test: '/api/test',
@@ -113,6 +115,7 @@ var Server = /** @class */ (function () {
         this.app.use(this.paths.auth, auth_1.default);
         this.app.use(this.paths.categorias, categorias_1.default);
         this.app.use(this.paths.clientes, clientes_1.default);
+        this.app.use(this.paths.emails, email_1.default);
         this.app.use(this.paths.productos, productos_1.default);
         this.app.use(this.paths.search, search_1.default);
         this.app.use(this.paths.test, test_1.default);
