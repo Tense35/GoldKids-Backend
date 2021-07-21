@@ -5,8 +5,8 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
     service: "Hotmail",
     auth: {
-        user: 'linuxmtasa@hotmail.com',
-        pass: 'LinuxMTA'
+        user: 'dsalazar35@hotmail.com',
+        pass: '123911aSx'
     }
 });
 
@@ -36,7 +36,7 @@ export const postEmail = async( req: Request, res: Response ) =>
     {
         const mailOptions = 
         {
-            from: 'linuxmtasa@hotmail.com',
+            from: 'dsalazar35@hotmail.com',
             to,
             subject: 'Información - GoldKids | No responder',
             text
